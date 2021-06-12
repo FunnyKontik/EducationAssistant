@@ -1,6 +1,7 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
+import 'package:education_assistant/screens/home_screen/screens/teachers_list.dart';
 import 'package:education_assistant/screens/home_screen/tabs/Marks_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/endTime_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/homeWork_tab.dart';
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> bottomNavBarTabs = [
+    var bottomNavBarTabs = <Widget>[
       ScheduleTab(
         dayIndex: appBarIndex,
       ),
@@ -99,6 +100,13 @@ class _HomeScreenState extends State<HomeScreen>
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Викладачі'),
+              onTap: () {
+                NavigationUtils.toScreen(context, screen: Teachers());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.apps),
+              title: Text('Мої предмети'),
               onTap: () {},
             ),
             ListTile(
@@ -106,7 +114,6 @@ class _HomeScreenState extends State<HomeScreen>
               title: Text('Нотатки'),
               onTap: () {},
             ),
-
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Налаштування'),
@@ -167,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget getAppBar() {
-    List<Widget> appBarTabs = [
+    var appBarTabs = <Widget>[
       AppBar(
         centerTitle: true,
         title: Text(titles[currentIndex]),

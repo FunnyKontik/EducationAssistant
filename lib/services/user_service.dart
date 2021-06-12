@@ -31,4 +31,15 @@ class UserService {
       return Future.error(e);
     }
   }
+
+  Stream<List<UserModel>> allUsersStream() {
+    return collectionPath.snapshots().map((querySnapshot) => querySnapshot.docs
+        .map((doc) => UserModel.fromMap(doc.data()))
+        .toList()
+        .cast<UserModel>());
+  }
+
+  Stream<QuerySnapshot<Object>> getAllUsers() {
+    return collectionPath.snapshots(includeMetadataChanges: true);
+  }
 }

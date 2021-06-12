@@ -14,7 +14,7 @@ class AuthService {
       if (firebaseUser != null) {
         var user = await _userService.findUserWithUid(firebaseUser.uid);
         if (user == null) {
-          print('New user: ${user.id}');
+          print('New user: ${firebaseUser.uid}');
           return await _userService.createUser(firebaseUser);
         } else {
           print('User found: ${user.id}');
