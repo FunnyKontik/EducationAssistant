@@ -10,7 +10,7 @@ class CustomTextInput extends StatefulWidget {
     Key key,
     @required this.title,
     @required this.textEditingController,
-    @required this.isPassword,
+    this.isPassword = false,
   }) : super(key: key);
 
   @override

@@ -55,7 +55,6 @@ class _AuthScreenState extends State<AuthScreen> {
             child: CustomTextInput(
               textEditingController: loginController,
               title: 'Логін',
-              isPassword: false,
             ),
           ),
           CustomTextInput(
