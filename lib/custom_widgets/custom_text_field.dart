@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextInput extends StatefulWidget {
   final String title;
   final TextEditingController textEditingController;
-  final isPassword;
+  final bool isPassword;
 
   const CustomTextInput({
     Key key,
@@ -30,9 +29,7 @@ class _CustomTextInput extends State<CustomTextInput> {
         enableSuggestions: false,
         autocorrect: false,
         obscureText: widget.isPassword ? !isVisible : isVisible,
-        style: TextStyle(
-          color: Colors.black,
-        ),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           border: InputBorder.none,
           suffixIcon: Padding(
@@ -40,14 +37,9 @@ class _CustomTextInput extends State<CustomTextInput> {
             child: widget.isPassword
                 ? IconButton(
                     icon: isVisible
-                        ? Icon(
-                            Icons.visibility,
-                            color: Colors.black,
-                          )
-                        : Icon(
-                            Icons.visibility_off_outlined,
-                            color: Colors.black,
-                          ),
+                        ? const Icon(Icons.visibility, color: Colors.black)
+                        : const Icon(Icons.visibility_off_outlined,
+                            color: Colors.black),
                     onPressed: () {
                       setState(() {
                         isVisible = !isVisible;
@@ -57,9 +49,9 @@ class _CustomTextInput extends State<CustomTextInput> {
                   )
                 : null,
           ),
-          contentPadding: EdgeInsets.all(18),
+          contentPadding: const EdgeInsets.all(18),
           hintText: widget.title,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
               color: Color.fromRGBO(169, 169, 169, 1),
               fontWeight: FontWeight.normal,
               fontSize: 18),
