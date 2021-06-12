@@ -12,15 +12,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(state.copyWith(isLoading: true));
       final currentUser = await _authService.checkCurrentUser();
-      print(currentUser);
       emit(state.copyWith(currentUser: currentUser, isLoading: false));
     } catch (e, s) {
-      emit(state.copyWith(
-        isLoading: false,
-      ));
+      emit(state.copyWith(isLoading: false));
     }
   }
-
 
   Future<void> googleSignIn() async {
     try {

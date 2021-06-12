@@ -1,25 +1,30 @@
 import 'package:education_assistant/models/user_model.dart';
+import 'package:education_assistant/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+  final _userService = UserService();
   final _googleSignIn = GoogleSignIn(scopes: ['email']);
-  final _firebaseInstace = FirebaseAuth.instance;
+  final _firebaseInstance = FirebaseAuth.instance;
 
   Future<UserModel> checkCurrentUser() async {
     try {
-      final firebaseUser = _firebaseInstace.currentUser;
+      final firebaseUser = _firebaseInstance.currentUser;
       if (firebaseUser != null) {
-        return UserModel(
-          imageUrl: firebaseUser.photoURL ?? '',
-          name: firebaseUser.displayName,
-          email: firebaseUser.email,
-        );
+        var user = await _userService.findUserWithUid(firebaseUser.uid);
+        if (user == null) {
+          print('New user: ${user.id}');
+          return await _userService.createUser(firebaseUser);
+        } else {
+          print('User found: ${user.id}');
+          return user;
+        }
       }
       print('User not found');
       return null;
     } catch (e, s) {
-      print('error');
+      print('AuthService::checkCurrentUser: $e');
       return null;
     }
   }
@@ -37,7 +42,7 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      await _firebaseInstace.signInWithCredential(credential);
+      await _firebaseInstance.signInWithCredential(credential);
       final user = await checkCurrentUser();
       print('Login Success');
       return user;
