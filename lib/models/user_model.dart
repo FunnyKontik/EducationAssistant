@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 class UserModel {
-
   final String name;
   final String imageUrl;
   final String email;
@@ -10,7 +9,7 @@ class UserModel {
     @required this.imageUrl,
     @required this.name,
     @required this.email,
-});
+  });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
@@ -20,13 +19,7 @@ class UserModel {
     );
   }
 
-
   Map<String, dynamic> toMap() {
-    return {
-      'imageUrl': this.imageUrl,
-      'name': this.name,
-      'email': this.email,
-    };
+    return {'imageUrl': imageUrl, 'name': name, 'email': email};
   }
-
 }

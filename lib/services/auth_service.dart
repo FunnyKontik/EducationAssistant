@@ -1,6 +1,5 @@
 import 'package:education_assistant/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -24,7 +23,6 @@ class AuthService {
       return null;
     }
   }
-
 
   Future<UserModel> googleSignIn() async {
     try {

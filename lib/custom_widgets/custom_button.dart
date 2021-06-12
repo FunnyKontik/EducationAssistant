@@ -9,8 +9,6 @@ class CustomButton extends StatelessWidget {
   final Color fontColor;
   final VoidCallback onPressed;
 
-
-
   CustomButton({
     @required this.content,
     @required this.height,
@@ -19,36 +17,13 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.color,
     this.fontColor,
-
   });
-
-
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: ElevatedButton(
+    return Center(
+        child: ElevatedButton(
       onPressed: onPressed,
-      child: SizedBox(
-        width: this.width,
-        height: this.height,
-        child: Center(
-          child: Text(
-            this.content,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              shadows: <Shadow>[
-                Shadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                )
-              ],
-              fontSize: fontSize ?? 31,
-              color: fontColor ?? Colors.white,
-              fontWeight: FontWeight.bold,
-
-            ),
-          ),
-        ),
-      ),
       style: ButtonStyle(
         elevation: MaterialStateProperty.all(10),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -57,9 +32,27 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-            return color ?? Color.fromRGBO(74, 84, 143, 1);
+          (Set<MaterialState> states) {
+            return color ?? const Color.fromRGBO(74, 84, 143, 1);
           },
+        ),
+      ),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Center(
+          child: Text(
+            content,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              shadows: const <Shadow>[
+                Shadow(color: Color.fromRGBO(0, 0, 0, 0.1))
+              ],
+              fontSize: fontSize ?? 31,
+              color: fontColor ?? Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     ));
