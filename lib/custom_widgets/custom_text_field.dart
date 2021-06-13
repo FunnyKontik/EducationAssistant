@@ -26,6 +26,7 @@ class _CustomTextInput extends State<CustomTextInput> {
       borderRadius: BorderRadius.circular(10),
       elevation: 5,
       child: TextField(
+        controller: widget.textEditingController,
         enableSuggestions: false,
         autocorrect: false,
         obscureText: widget.isPassword ? !isVisible : isVisible,
