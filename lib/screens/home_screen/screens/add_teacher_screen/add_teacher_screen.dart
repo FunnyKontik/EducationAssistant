@@ -14,24 +14,20 @@ class AddTeacherScreen extends StatefulWidget {
 class _AddTeacherScreenState extends State<AddTeacherScreen> {
   UserService userService = UserService();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text('Додавання викладача'),
-
-
       ),
       body: buildBody(),
     );
   }
 
-  Widget buildBody(){
-
+  Widget buildBody() {
     return StreamBuilder<QuerySnapshot>(
-      stream: userService.getTeachers(),
+      stream: userService.getAllUsers(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Something went wrong...'));
@@ -50,17 +46,18 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
               child: ListTile(
                 leading: UserAvatar(user: user),
                 title: Text(user.name),
-                trailing: Icon(Icons.info_outline, color: Colors.blueGrey),
-                onTap: () {
-
-                },
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  color: Colors.blueGrey,
+                  onPressed: () {
+                    userService.updateUserToModer(snapshot.data.docs[index].id);
+                  },
+                ),
               ),
             );
           },
         );
       },
     );
-
   }
-
 }
