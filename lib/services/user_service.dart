@@ -39,7 +39,9 @@ class UserService {
         .cast<UserModel>());
   }
 
-  Stream<QuerySnapshot<Object>> getAllUsers() {
-    return collectionPath.snapshots(includeMetadataChanges: true);
+  Stream<QuerySnapshot<Object>> getTeachers() {
+    return collectionPath
+        .where('role', whereIn: ['admin','moder'])
+        .snapshots(includeMetadataChanges: true);
   }
 }

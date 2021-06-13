@@ -1,7 +1,7 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
-import 'package:education_assistant/screens/home_screen/screens/teachers_list.dart';
+import 'package:education_assistant/screens/home_screen/screens/teachers_list_screen/teachers_list.dart';
 import 'package:education_assistant/screens/home_screen/tabs/Marks_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/endTime_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/homeWork_tab.dart';
