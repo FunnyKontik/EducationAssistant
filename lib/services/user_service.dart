@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserService {
+class UsersService {
   final _usersCollection = 'users';
 
   CollectionReference get collectionPath {
@@ -32,41 +32,38 @@ class UserService {
     }
   }
 
-
-  Stream<QuerySnapshot<Object>> getTeachers() {
-    return collectionPath
-        .where('role', whereIn: ['admin','moder'])
-        .snapshots(includeMetadataChanges: true);
-  }
-
-  Stream<QuerySnapshot<Object>> getAllUsers() {
-    return collectionPath
-        .where('role' , isEqualTo: 'user')
-        .snapshots(includeMetadataChanges: true);
+  Stream<List<UserModel>> getAllUsers() {
+    try {
+      return collectionPath.snapshots(includeMetadataChanges: true).map((e) => e
+          .docs
+          .map((e) => UserModel.fromMap(e.data()).copyWith(id: e.id))
+          .toList());
+    } catch (e, s) {
+      return null;
+    }
   }
 
   Future<void> deleteUser(String docId) {
     return collectionPath
         .doc(docId)
         .delete()
-        .then((value) => print("User Deleted"))
-        .catchError((error) => print("Failed to delete user: $error"));
+        .then((value) => print('User Deleted'))
+        .catchError((error) => print('Failed to delete user: $error'));
   }
 
   Future<void> updateUserToModer(String userID) {
     return collectionPath
         .doc(userID)
         .update({'role': 'moder'})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
+        .then((value) => print('User Updated'))
+        .catchError((error) => print('Failed to update user: $error'));
   }
 
   Future<void> updateModerToUser(String userID) {
     return collectionPath
         .doc(userID)
         .update({'role': 'user'})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
+        .then((value) => print('User Updated'))
+        .catchError((error) => print('Failed to update user: $error'));
   }
-
 }

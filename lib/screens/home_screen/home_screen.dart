@@ -1,8 +1,9 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
+import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_list.dart';
-import 'package:education_assistant/screens/home_screen/screens/teachers_list_screen/teachers_list.dart';
+import 'package:education_assistant/screens/home_screen/screens/teachers_list/teachers_screen.dart';
 import 'package:education_assistant/screens/home_screen/tabs/Marks_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/endTime_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/homeWork_tab.dart';
@@ -11,11 +12,10 @@ import 'package:education_assistant/screens/home_screen/tabs/schedule_tab.dart';
 import 'package:education_assistant/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  final UserModel currentUser;
-
-  const HomeScreen({Key key, @required this.currentUser}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -23,7 +23,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  AuthCubit authCubit = AuthCubit();
+  AuthCubit authCubit;
+  UsersCubit usersCubit;
+  UserModel currentUser;
 
   List<String> titles = <String>['Розклад', 'Оцінки', 'Час', 'Дзвінки', 'Д/З'];
   int currentIndex = 0;
@@ -44,6 +46,10 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    authCubit = BlocProvider.of<AuthCubit>(context);
+    usersCubit = BlocProvider.of<UsersCubit>(context);
+    currentUser = authCubit.state.currentUser;
+    usersCubit.loadInitialData();
     _tabController = TabController(vsync: this, length: myTabs.length);
   }
 
@@ -56,9 +62,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     var bottomNavBarTabs = <Widget>[
-      ScheduleTab(
-        dayIndex: appBarIndex,
-      ),
+      ScheduleTab(dayIndex: appBarIndex),
       MarkTab(),
       EndTimeTab(),
       RingsTab(),
@@ -80,16 +84,16 @@ class _HomeScreenState extends State<HomeScreen>
               accountName: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(widget.currentUser.name),
+                  Text(currentUser.name),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text('ПЗПІ-19-7'),
                   ),
                 ],
               ),
-              accountEmail: Text(widget.currentUser.email),
+              accountEmail: Text(currentUser.email),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(widget.currentUser.imageUrl),
+                backgroundImage: NetworkImage(currentUser.imageUrl),
                 radius: 30,
               ),
             ),
@@ -105,9 +109,7 @@ class _HomeScreenState extends State<HomeScreen>
               title: Text('Викладачі'),
               onTap: () {
                 NavigationUtils.toScreen(context,
-                    screen: Teachers(
-                      currentUser: widget.currentUser,
-                    ));
+                    screen: const TeachersScreen());
               },
             ),
             ListTile(
@@ -188,7 +190,6 @@ class _HomeScreenState extends State<HomeScreen>
           onTap: (index) {
             setState(() {
               appBarIndex = index;
-              print(appBarIndex);
             });
           },
           controller: _tabController,

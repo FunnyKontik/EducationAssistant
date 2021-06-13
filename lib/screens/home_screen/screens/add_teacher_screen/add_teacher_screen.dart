@@ -12,7 +12,7 @@ class AddTeacherScreen extends StatefulWidget {
 }
 
 class _AddTeacherScreenState extends State<AddTeacherScreen> {
-  UserService userService = UserService();
+  UsersService userService = UsersService();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
 
   Widget buildBody() {
     return StreamBuilder<QuerySnapshot>(
-      stream: userService.getAllUsers(),
+      // stream: userService.getAllUsers(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Something went wrong...'));

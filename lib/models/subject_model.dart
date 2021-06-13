@@ -1,5 +1,3 @@
-import 'package:education_assistant/constants/enums/user_role.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class SubjectModel {
@@ -8,13 +6,16 @@ class SubjectModel {
   final double credits;
   final double hours;
   final String desc;
+  final List<String> teachersIds;
 
-  SubjectModel(
-      {@required this.id,
-      @required this.name,
-      @required this.credits,
-      @required this.desc,
-      @required this.hours});
+  SubjectModel({
+    @required this.id,
+    @required this.name,
+    @required this.credits,
+    @required this.desc,
+    @required this.hours,
+    this.teachersIds,
+  });
 
   factory SubjectModel.fromMap(Map<String, dynamic> map) {
     return SubjectModel(
@@ -23,16 +24,6 @@ class SubjectModel {
       credits: map['credits'] as double,
       hours: map['hours'] as double,
       desc: map['desc'] as String,
-    );
-  }
-
-  factory SubjectModel.fromFirebaseSubject(SubjectModel firebasesubject) {
-    return SubjectModel(
-      id: firebasesubject.id,
-      name: firebasesubject.name,
-      desc: firebasesubject.desc,
-      hours: firebasesubject.hours,
-      credits: firebasesubject.credits,
     );
   }
 

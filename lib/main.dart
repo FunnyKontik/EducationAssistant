@@ -1,7 +1,10 @@
+import 'package:education_assistant/cubit/auth/auth_cubit.dart';
+import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   ApplicationRunner().run();
@@ -27,10 +30,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Education Assistant',
-      theme: ThemeData(primaryColor: Colors.blue),
-      home: SplashScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+        BlocProvider<UsersCubit>(create: (_) => UsersCubit()),
+      ],
+      child: MaterialApp(
+        title: 'Education Assistant',
+        theme: ThemeData(primaryColor: Colors.blue),
+        home: SplashScreen(),
+      ),
     );
   }
 }

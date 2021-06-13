@@ -17,7 +17,13 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
-  final authCubit = AuthCubit();
+  AuthCubit authCubit;
+
+  @override
+  void initState() {
+    authCubit = BlocProvider.of<AuthCubit>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
       bloc: authCubit,
       listener: (_, state) {
         if (!state.isLoading && state.currentUser != null) {
-          NavigationUtils.toScreenRemoveUntil(context,
-              screen: HomeScreen(currentUser: state.currentUser));
+          NavigationUtils.toScreenRemoveUntil(context, screen: HomeScreen());
         }
       },
       child: Padding(
@@ -89,10 +94,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-              child: Text(
-                'Або',
-                style: TextStyle(color: Colors.black38),
-              ),
+              child: Text('Або', style: TextStyle(color: Colors.black38)),
             ),
             Container(
               height: 1,
@@ -101,18 +103,17 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ]),
           SignWithCustomButton(
-              backColor: MaterialStateProperty.resolveWith<Color>(
-                (states) {
-                  return const Color.fromRGBO(222, 82, 70, 1);
-                },
-              ),
-              fontColor: Colors.white,
-              content: 'Увійти з Google',
-              icon: 'assets/GoogleIcon.png',
-              height: 47,
-              onPressed: () {
-                authCubit.googleSignIn();
-              })
+            backColor: MaterialStateProperty.resolveWith<Color>(
+              (states) {
+                return const Color.fromRGBO(222, 82, 70, 1);
+              },
+            ),
+            fontColor: Colors.white,
+            content: 'Увійти з Google',
+            icon: 'assets/GoogleIcon.png',
+            height: 47,
+            onPressed: authCubit.googleSignIn,
+          )
         ]),
       ),
     );

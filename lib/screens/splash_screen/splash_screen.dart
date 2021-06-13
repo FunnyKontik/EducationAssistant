@@ -14,10 +14,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  AuthCubit authCubit = AuthCubit();
+  AuthCubit authCubit;
 
   @override
   void initState() {
+    authCubit = BlocProvider.of<AuthCubit>(context);
     authCubit.checkCurrentUser();
     super.initState();
   }
@@ -29,16 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
         listener: (_, state) {
           if (!state.isLoading) {
             NavigationUtils.toScreenRemoveUntil(context,
-                screen: state.currentUser != null
-                    ? HomeScreen(
-                        currentUser: state.currentUser,
-                      )
-                    : AuthScreen());
+                screen:
+                    state.currentUser != null ? HomeScreen() : AuthScreen());
           }
         },
-        child: Scaffold(
-            body: WidgetUtils.showLoading()
-        ));
+        child: Scaffold(body: WidgetUtils.showLoading()));
   }
-
 }
