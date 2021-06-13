@@ -32,16 +32,41 @@ class UserService {
     }
   }
 
-  Stream<List<UserModel>> allUsersStream() {
-    return collectionPath.snapshots().map((querySnapshot) => querySnapshot.docs
-        .map((doc) => UserModel.fromMap(doc.data()))
-        .toList()
-        .cast<UserModel>());
-  }
 
   Stream<QuerySnapshot<Object>> getTeachers() {
     return collectionPath
         .where('role', whereIn: ['admin','moder'])
         .snapshots(includeMetadataChanges: true);
   }
+
+  Stream<QuerySnapshot<Object>> getAllUsers() {
+    return collectionPath
+        .where('role' , isEqualTo: 'user')
+        .snapshots(includeMetadataChanges: true);
+  }
+
+  Future<void> deleteUser(String docId) {
+    return collectionPath
+        .doc(docId)
+        .delete()
+        .then((value) => print("User Deleted"))
+        .catchError((error) => print("Failed to delete user: $error"));
+  }
+
+  Future<void> updateUserToModer(String userID) {
+    return collectionPath
+        .doc(userID)
+        .update({'role': 'moder'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  Future<void> updateModerToUser(String userID) {
+    return collectionPath
+        .doc(userID)
+        .update({'role': 'user'})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
 }

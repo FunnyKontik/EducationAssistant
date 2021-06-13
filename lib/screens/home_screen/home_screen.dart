@@ -101,7 +101,10 @@ class _HomeScreenState extends State<HomeScreen>
               leading: Icon(Icons.person),
               title: Text('Викладачі'),
               onTap: () {
-                NavigationUtils.toScreen(context, screen: Teachers());
+                NavigationUtils.toScreen(context,
+                    screen: Teachers(
+                      currentUser: widget.currentUser,
+                    ));
               },
             ),
             ListTile(
