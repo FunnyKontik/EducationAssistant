@@ -1,8 +1,9 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
+import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
-import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_list.dart';
+import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/teachers_list/teachers_screen.dart';
 import 'package:education_assistant/screens/home_screen/tabs/Marks_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/endTime_tab.dart';
@@ -25,7 +26,9 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   AuthCubit authCubit;
   UsersCubit usersCubit;
+  SubjectsCubit subjectsCubit;
   UserModel currentUser;
+
 
   List<String> titles = <String>['Розклад', 'Оцінки', 'Час', 'Дзвінки', 'Д/З'];
   int currentIndex = 0;
@@ -48,8 +51,10 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     authCubit = BlocProvider.of<AuthCubit>(context);
     usersCubit = BlocProvider.of<UsersCubit>(context);
+    subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
     currentUser = authCubit.state.currentUser;
     usersCubit.loadInitialData();
+    subjectsCubit.loadInitialData();
     _tabController = TabController(vsync: this, length: myTabs.length);
   }
 
@@ -101,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen>
               leading: Icon(Icons.library_books_sharp),
               title: Text('Список предметів'),
               onTap: () {
-                NavigationUtils.toScreen(context, screen: Subjects());
+                NavigationUtils.toScreen(context, screen: SubjectsScreen());
               },
             ),
             ListTile(

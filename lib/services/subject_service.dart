@@ -8,22 +8,14 @@ class SubjectService {
     return FirebaseFirestore.instance.collection(_subjectsCollection);
   }
 
-  Future<SubjectModel> createSubject(SubjectModel subject) async {
-    try {
-      await collectionPath.doc().set(subject.toMap());
-      return subject;
-    } catch (e, s) {
-      print('saveUserToFirestore: $e, $s');
-      return Future.error(e);
-    }
-  }
+
 
   Future<void> addSubject(
       String name, String desc, double credits, double hours) {
     // collectionPath.doc().collection('subjects');
     // final List<SubjectModel> subject = [];
     // subject.where((e) => e.teachersIds.contains(currentUser.id)).toList();
-    // users.where((e) => subkect.teachersIds.containers(e.id)).toList();
+    // users.where((e) => subject.teachersIds.containers(e.id)).toList();
 
     // Call the user's CollectionReference to add a new user
     return collectionPath
@@ -37,15 +29,22 @@ class SubjectService {
         .catchError((error) => print("Failed to add subject: $error"));
   }
 
-  Future<void> deleteSubject(String docId) {
-    return collectionPath
-        .doc(docId)
-        .delete()
-        .then((value) => print("Subject Deleted"))
-        .catchError((error) => print("Failed to delete subject: $error"));
+  Future<void> deleteSubject(SubjectModel subject) {
+    try {
+      return collectionPath.doc(subject.id).delete();
+    } catch (e, s) {
+      print('deleteGroupFromFirestore: $e, $s');
+    }
   }
 
-  Stream<QuerySnapshot<Object>> getSubjects() {
-    return collectionPath.snapshots(includeMetadataChanges: true);
+  Stream<List<SubjectModel>> getSubjects() {
+    try {
+      return collectionPath.snapshots(includeMetadataChanges: true).map((e) => e
+          .docs
+          .map((e) => SubjectModel.fromMap(e.data()).copyWith(id: e.id))
+          .toList());
+    } catch (e, s) {
+      return null;
+    }
   }
 }

@@ -32,6 +32,7 @@ class UsersService {
     }
   }
 
+
   Stream<List<UserModel>> getAllUsers() {
     try {
       return collectionPath.snapshots(includeMetadataChanges: true).map((e) => e
