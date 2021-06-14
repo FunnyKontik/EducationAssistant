@@ -26,6 +26,8 @@ class _AddSubjectState extends State<AddSubject> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> teacherIds = [];
+
     TextEditingController subjectNameController = TextEditingController();
     TextEditingController subjectCreditsController = TextEditingController();
     TextEditingController subjectHoursController = TextEditingController();
@@ -78,7 +80,8 @@ class _AddSubjectState extends State<AddSubject> {
                                 subjectNameController.text,
                                 subjectDescController.text,
                                 double.parse(subjectCreditsController.text),
-                                double.parse(subjectHoursController.text));
+                                double.parse(subjectHoursController.text),
+                                teacherIds);
                           }
                           Navigator.pop(context, 'Додати');
                         },

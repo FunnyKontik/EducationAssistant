@@ -12,13 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubjectsScreen extends StatefulWidget {
-
   const SubjectsScreen({Key key}) : super(key: key);
 
   @override
   _SubjectsScreenState createState() => _SubjectsScreenState();
-
-
 }
 
 class _SubjectsScreenState extends State<SubjectsScreen> {
@@ -74,8 +71,10 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                   title: Text(subject.name),
                   trailing: Icon(Icons.info_outline, color: Colors.blueGrey),
                   onTap: () {
-                    NavigationUtils.toScreen(context, screen: SubjectInfo(subjectModel: subject,)
-                    );
+                    NavigationUtils.toScreen(context,
+                        screen: SubjectInfo(
+                          subjectModel: subject,
+                        ));
                   }),
             );
           },
@@ -83,7 +82,4 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
       },
     );
   }
-
 }
-
-

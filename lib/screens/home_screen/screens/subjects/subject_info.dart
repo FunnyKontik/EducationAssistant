@@ -1,3 +1,4 @@
+import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/users/users_state.dart';
 import 'package:education_assistant/custom_widgets/user_avatar.dart';
 import 'package:education_assistant/models/subject_model.dart';
@@ -21,10 +22,12 @@ class SubjectInfo extends StatefulWidget {
 
 class _SubjectInfoState extends State<SubjectInfo> {
   UsersCubit usersCubit;
+  SubjectsCubit subjectsCubit;
 
   @override
   void initState() {
     usersCubit = BlocProvider.of<UsersCubit>(context);
+    subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
     super.initState();
   }
 
@@ -78,7 +81,7 @@ class _SubjectInfoState extends State<SubjectInfo> {
               textAlign: TextAlign.start,
             ),
             const Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 20),
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
               child: Text(
                 'Викладачi: ',
                 textAlign: TextAlign.center,
@@ -92,7 +95,7 @@ class _SubjectInfoState extends State<SubjectInfo> {
   }
 
   Widget buildBody() {
-    if(widget.subjectModel.teachersIds != null){
+    if (widget.subjectModel.teachersIds != null) {
       return BlocBuilder<UsersCubit, UsersState>(
         bloc: usersCubit,
         builder: (context, usersState) {
@@ -112,15 +115,49 @@ class _SubjectInfoState extends State<SubjectInfo> {
                   title: Text(teacher.name),
                   trailing: const Icon(Icons.info_outline, color: Colors.grey),
                   onTap: () {},
+                  onLongPress: () {
+                    showAlterDialog(teacher.id);
+                  },
                 ),
               );
             },
           );
         },
       );
+    } else {
+      return const Center(
+          child: Text(
+        'Викладачi вiдсутнi :(',
+      ));
     }
-    else {
-      return const Center(child: Text('Викладачi вiдсутнi :(',));
-    }
+  }
+
+  void showAlterDialog(String teacherId) {
+    showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Видалення викладача',
+                  textAlign: TextAlign.center),
+              content: const Text(
+                'Ви дійсно хочете видалити викладача?',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () async {
+                    await subjectsCubit.removeTeacherFromSubject(
+                        widget.subjectModel, teacherId);
+                    Navigator.pop(context, 'Видалити');
+                  },
+                  child: const Text(
+                    'Видалити',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Вiдмiнити'),
+                  child: const Text('Вiдмiнити'),
+                ),
+              ],
+            ));
   }
 }
