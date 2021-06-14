@@ -54,7 +54,6 @@ class _TeachersScreenState extends State<TeachersScreen> {
       bloc: usersCubit,
       builder: (context, usersState) {
         if (usersState.isLoading) return WidgetUtils.showLoading();
-
         final teachers =
             usersState.teachers.where((e) => e.id != currentUser.id).toList();
 

@@ -6,7 +6,7 @@ class SubjectModel {
   final double credits;
   final double hours;
   final String desc;
-  final List<String> teachersIds;
+  final List<dynamic> teachersIds;
 
   SubjectModel({
     @required this.id,
@@ -19,11 +19,37 @@ class SubjectModel {
 
   factory SubjectModel.fromMap(Map<String, dynamic> map) {
     return SubjectModel(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      credits: map['credits'] as double,
-      hours: map['hours'] as double,
-      desc: map['desc'] as String,
+        id: map['id'] as String,
+        name: map['name'] as String,
+        credits: map['credits'] as double,
+        hours: map['hours'] as double,
+        desc: map['desc'] as String,
+        teachersIds: map['teacherIds'] as List<dynamic>);
+  }
+
+  SubjectModel copyWith({
+    String id,
+    String name,
+    double credits,
+    double hours,
+    String desc,
+    List<dynamic> teacherIds,
+  }) {
+    if ((id == null || identical(id, this.id)) &&
+        (name == null || identical(name, this.name)) &&
+        (credits == null || identical(credits, this.credits)) &&
+        (hours == null || identical(hours, this.hours)) &&
+        (desc == null || identical(desc, this.desc)) &&
+        (teacherIds == null || identical(teacherIds, this.teachersIds))) {
+      return this;
+    }
+    return SubjectModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      credits: credits ?? this.credits,
+      hours: hours ?? this.hours,
+      desc: desc ?? this.desc,
+      teachersIds: teachersIds ?? this.teachersIds,
     );
   }
 
@@ -34,6 +60,7 @@ class SubjectModel {
       'desc': desc,
       'credits': credits,
       'hours': hours,
+      'teacherIds': teachersIds,
     };
   }
 }

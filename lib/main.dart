@@ -1,4 +1,5 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
+import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
         BlocProvider<UsersCubit>(create: (_) => UsersCubit()),
         BlocProvider<GroupsCubit> (create: (_) => GroupsCubit()),
+        BlocProvider<SubjectsCubit>(create: (_) => SubjectsCubit()),
       ],
       child: MaterialApp(
         title: 'Education Assistant',

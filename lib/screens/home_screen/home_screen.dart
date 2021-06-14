@@ -5,6 +5,11 @@ import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/groups_screen/groups_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_list.dart';
+import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
+import 'package:education_assistant/cubit/users/users_cubit.dart';
+import 'package:education_assistant/models/user_model.dart';
+import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
+import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/teachers_list/teachers_screen.dart';
 import 'package:education_assistant/screens/home_screen/tabs/Marks_tab.dart';
 import 'package:education_assistant/screens/home_screen/tabs/endTime_tab.dart';
@@ -27,8 +32,10 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   AuthCubit authCubit;
   UsersCubit usersCubit;
+  SubjectsCubit subjectsCubit;
   UserModel currentUser;
   GroupsCubit groupsCubit;
+
 
 
   List<String> titles = <String>['Розклад', 'Оцінки', 'Час', 'Дзвінки', 'Д/З'];
@@ -53,9 +60,11 @@ class _HomeScreenState extends State<HomeScreen>
     authCubit = BlocProvider.of<AuthCubit>(context);
     usersCubit = BlocProvider.of<UsersCubit>(context);
     groupsCubit = BlocProvider.of<GroupsCubit>(context);
+    groupsCubit.loadInitialData();
+    subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
     currentUser = authCubit.state.currentUser;
     usersCubit.loadInitialData();
-    groupsCubit.loadInitialData();
+    subjectsCubit.loadInitialData();
     _tabController = TabController(vsync: this, length: myTabs.length);
   }
 
@@ -107,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
               leading: Icon(Icons.library_books_sharp),
               title: Text('Список предметів'),
               onTap: () {
-                NavigationUtils.toScreen(context, screen: Subjects());
+                NavigationUtils.toScreen(context, screen: SubjectsScreen());
               },
             ),
             ListTile(
