@@ -1,4 +1,10 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
+import 'package:education_assistant/cubit/subjects/groups_cubit.dart';
+import 'package:education_assistant/cubit/users/users_cubit.dart';
+import 'package:education_assistant/models/user_model.dart';
+import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
+import 'package:education_assistant/screens/home_screen/screens/groups_screen/groups_screen.dart';
+import 'package:education_assistant/screens/home_screen/screens/subjects/subjects_list.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
@@ -28,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen>
   UsersCubit usersCubit;
   SubjectsCubit subjectsCubit;
   UserModel currentUser;
+  GroupsCubit groupsCubit;
+
 
 
   List<String> titles = <String>['Розклад', 'Оцінки', 'Час', 'Дзвінки', 'Д/З'];
@@ -51,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     authCubit = BlocProvider.of<AuthCubit>(context);
     usersCubit = BlocProvider.of<UsersCubit>(context);
+    groupsCubit = BlocProvider.of<GroupsCubit>(context);
+    groupsCubit.loadInitialData();
     subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
     currentUser = authCubit.state.currentUser;
     usersCubit.loadInitialData();
@@ -115,6 +125,14 @@ class _HomeScreenState extends State<HomeScreen>
               onTap: () {
                 NavigationUtils.toScreen(context,
                     screen: const TeachersScreen());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Групи'),
+              onTap: () {
+                NavigationUtils.toScreen(context,
+                    screen: const GroupsScreen());
               },
             ),
             ListTile(
