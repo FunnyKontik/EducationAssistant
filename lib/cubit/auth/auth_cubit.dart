@@ -6,7 +6,7 @@ import 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final _authService = AuthService();
 
-  AuthCubit() : super(AuthState());
+  AuthCubit() : super(const AuthState());
 
   Future<void> checkCurrentUser() async {
     try {

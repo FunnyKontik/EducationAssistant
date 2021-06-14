@@ -8,15 +8,6 @@ class SubjectService {
     return FirebaseFirestore.instance.collection(_subjectsCollection);
   }
 
-  Future<SubjectModel> createSubject(SubjectModel subject) async {
-    try {
-      await collectionPath.doc().set(subject.toMap());
-      return subject;
-    } catch (e, s) {
-      print('saveUserToFirestore: $e, $s');
-      return Future.error(e);
-    }
-  }
 
   Future<void> addSubject(
       String name, String desc, double credits, double hours) {

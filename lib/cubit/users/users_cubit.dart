@@ -34,6 +34,16 @@ class UsersCubit extends Cubit<UsersState> {
     }
   }
 
+  Future<void> updateUser(String userId) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      await _usersService.updateUserToModer(userId);
+      emit(state.copyWith(isLoading: false));
+    } catch (e, s) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
   void dispose() {
     _usersSubscription.cancel();
   }

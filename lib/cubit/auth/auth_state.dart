@@ -6,7 +6,7 @@ class AuthState {
   final UserModel currentUser;
   final bool isLoading;
 
-  AuthState({
+  const AuthState({
     this.currentUser,
     this.isLoading = false,
   });

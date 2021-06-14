@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubit/subjects/groups_cubit.dart';
+
 void main() {
   ApplicationRunner().run();
 }
@@ -34,6 +36,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
         BlocProvider<UsersCubit>(create: (_) => UsersCubit()),
+        BlocProvider<GroupsCubit> (create: (_) => GroupsCubit()),
       ],
       child: MaterialApp(
         title: 'Education Assistant',
