@@ -26,7 +26,6 @@ class _AddSubjectState extends State<AddSubject> {
 
   @override
   Widget build(BuildContext context) {
-    SubjectService subjectService = SubjectService();
     TextEditingController subjectNameController = TextEditingController();
     TextEditingController subjectCreditsController = TextEditingController();
     TextEditingController subjectHoursController = TextEditingController();
@@ -75,7 +74,7 @@ class _AddSubjectState extends State<AddSubject> {
                       TextButton(
                         onPressed: () {
                           if (subjectNameController.text.length > 0) {
-                            subjectService.addSubject(
+                            subjectsCubit.addSubject(
                                 subjectNameController.text,
                                 subjectDescController.text,
                                 double.parse(subjectCreditsController.text),

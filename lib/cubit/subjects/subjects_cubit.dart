@@ -20,6 +20,16 @@ class SubjectsCubit extends Cubit<SubjectState> {
     }
   }
 
+  void addSubject(String name, String desc, double credits, double hours) async{
+    try {
+      emit(state.copyWith(isLoading: true));
+      await _subjectService.addSubject(name, desc, credits, hours);
+      emit(state.copyWith(isLoading: false));
+    } catch (e, s) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
   void deleteSubject(SubjectModel subject) async {
     try {
       emit(state.copyWith(isLoading: true));

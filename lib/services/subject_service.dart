@@ -8,7 +8,14 @@ class SubjectService {
     return FirebaseFirestore.instance.collection(_subjectsCollection);
   }
 
-
+  Future<void> addTeacher(SubjectModel subject, String teacherId){
+    subject.teachersIds.add(teacherId);
+    return collectionPath
+        .doc(subject.id)
+        .update({'TeacherIds': subject.teachersIds})
+        .then((value) => print('Subject teachers updated'))
+        .catchError((error) => print('Failed to update subject teacher: $error'));
+  }
 
   Future<void> addSubject(
       String name, String desc, double credits, double hours) {
@@ -36,6 +43,8 @@ class SubjectService {
       print('deleteGroupFromFirestore: $e, $s');
     }
   }
+
+
 
   Stream<List<SubjectModel>> getSubjects() {
     try {
