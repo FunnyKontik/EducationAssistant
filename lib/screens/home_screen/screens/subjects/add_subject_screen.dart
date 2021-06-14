@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
+import 'package:education_assistant/cubit/subjects/subjects_state.dart';
 import 'package:education_assistant/custom_widgets/custom_text_field.dart';
 import 'package:education_assistant/models/subject_model.dart';
 import 'package:education_assistant/services/subject_service.dart';
 import 'package:education_assistant/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddSubject extends StatefulWidget {
   const AddSubject({Key key}) : super(key: key);
@@ -14,11 +17,17 @@ class AddSubject extends StatefulWidget {
 }
 
 class _AddSubjectState extends State<AddSubject> {
+  SubjectsCubit subjectsCubit;
 
+  @override
+  void initState(){
+    subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    SubjectService subjectService = SubjectService();
+    List<dynamic> teacherIds = [];
+
     TextEditingController subjectNameController = TextEditingController();
     TextEditingController subjectCreditsController = TextEditingController();
     TextEditingController subjectHoursController = TextEditingController();
@@ -67,11 +76,12 @@ class _AddSubjectState extends State<AddSubject> {
                       TextButton(
                         onPressed: () {
                           if (subjectNameController.text.length > 0) {
-                            subjectService.addSubject(
+                            subjectsCubit.addSubject(
                                 subjectNameController.text,
                                 subjectDescController.text,
                                 double.parse(subjectCreditsController.text),
-                                double.parse(subjectHoursController.text));
+                                double.parse(subjectHoursController.text),
+                                teacherIds);
                           }
                           Navigator.pop(context, 'Додати');
                         },
@@ -91,24 +101,18 @@ class _AddSubjectState extends State<AddSubject> {
   }
 
   Widget buildBody() {
-    SubjectService subjectService = SubjectService();
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: subjectService.getSubjects(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong...'));
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return BlocBuilder<SubjectsCubit,SubjectState>(
+      bloc: subjectsCubit,
+      builder: (context, subjectState) {
+        if(subjectState.isLoading){
           return WidgetUtils.showLoading();
         }
+        final subjects = subjectState.subjects.toList();
 
         return ListView.builder(
-          itemCount: snapshot.data.docs.length,
+          itemCount: subjects.length,
           itemBuilder: (_, index) {
-            final subject =
-            SubjectModel.fromMap(snapshot.data.docs[index].data());
+            final subject = subjects[index];
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
@@ -116,7 +120,7 @@ class _AddSubjectState extends State<AddSubject> {
                 trailing: IconButton(
                   icon: Icon(Icons.delete, color: Colors.grey),
                   onPressed: () {
-                    subjectService.deleteSubject(snapshot.data.docs[index].id);
+                    subjectsCubit.deleteSubject(subject);
                   },
                 ),
               ),
