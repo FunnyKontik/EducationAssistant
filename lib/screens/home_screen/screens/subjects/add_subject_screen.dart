@@ -79,8 +79,8 @@ class _AddSubjectState extends State<AddSubject> {
                             subjectsCubit.addSubject(
                                 subjectNameController.text,
                                 subjectDescController.text,
-                                double.parse(subjectCreditsController.text),
-                                double.parse(subjectHoursController.text),
+                                int.parse(subjectCreditsController.text),
+                                int.parse(subjectHoursController.text),
                                 teacherIds);
                           }
                           Navigator.pop(context, 'Додати');

@@ -1,7 +1,9 @@
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
+import 'package:education_assistant/cubit/subjects/subjects_state.dart';
 import 'package:education_assistant/cubit/users/users_state.dart';
 import 'package:education_assistant/custom_widgets/user_avatar.dart';
 import 'package:education_assistant/models/subject_model.dart';
+import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/utils/navigation_utils.dart';
 import 'package:education_assistant/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +30,9 @@ class _SubjectInfoState extends State<SubjectInfo> {
   void initState() {
     usersCubit = BlocProvider.of<UsersCubit>(context);
     subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
+    // currentUser = authCubit.state.currentUser;
+    // subjectTeachers = subjectsCubit.state.t
+
     super.initState();
   }
 
@@ -95,41 +100,38 @@ class _SubjectInfoState extends State<SubjectInfo> {
   }
 
   Widget buildBody() {
-    if (widget.subjectModel.teachersIds != null) {
-      return BlocBuilder<UsersCubit, UsersState>(
-        bloc: usersCubit,
-        builder: (context, usersState) {
-          if (usersState.isLoading) return WidgetUtils.showLoading();
-          final teachers = usersState.teachers
-              .where((e) => widget.subjectModel.teachersIds.contains(e.id))
-              .toList();
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: teachers.length,
-            itemBuilder: (_, index) {
-              final teacher = teachers[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: ListTile(
-                  leading: UserAvatar(user: teacher),
-                  title: Text(teacher.name),
-                  trailing: const Icon(Icons.info_outline, color: Colors.grey),
-                  onTap: () {},
-                  onLongPress: () {
-                    showAlterDialog(teacher.id);
-                  },
-                ),
-              );
-            },
-          );
-        },
-      );
-    } else {
-      return const Center(
-          child: Text(
-        'Викладачi вiдсутнi :(',
-      ));
-    }
+    return BlocBuilder<SubjectsCubit, SubjectState>(
+      bloc: subjectsCubit,
+      builder: (context, subjectState) {
+        if (subjectState.isLoading) return WidgetUtils.showLoading();
+        final teachers = usersCubit.state.teachers
+            .where((e) => subjectState
+                .getTeachersIds(widget.subjectModel.id)
+                .contains(e.id))
+            .toList();
+        print(teachers.length);
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: teachers.length,
+          itemBuilder: (_, index) {
+            final teacher = teachers[index];
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: ListTile(
+                leading: UserAvatar(user: teacher),
+                title: Text(teacher.name),
+                trailing: const Icon(Icons.info_outline, color: Colors.grey),
+                onTap: () {},
+                onLongPress: () {
+                  showAlterDialog(teacher.id);
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void showAlterDialog(String teacherId) {

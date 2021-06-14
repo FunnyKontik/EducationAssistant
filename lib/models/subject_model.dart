@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 class SubjectModel {
   final String id;
   final String name;
-  final double credits;
-  final double hours;
+  final int credits;
+  final int hours;
   final String desc;
-  final List<dynamic> teachersIds;
+  final List<String> teachersIds;
 
   SubjectModel({
     @required this.id,
@@ -21,26 +21,28 @@ class SubjectModel {
     return SubjectModel(
         id: map['id'] as String,
         name: map['name'] as String,
-        credits: map['credits'] as double,
-        hours: map['hours'] as double,
+        credits: map['credits'] as int,
+        hours: map['hours'] as int,
         desc: map['desc'] as String,
-        teachersIds: map['teacherIds'] as List<dynamic>);
+        teachersIds: (map['teacherIds'] as List)
+            .map((e) => e as String)
+            .toList());
   }
 
   SubjectModel copyWith({
     String id,
     String name,
-    double credits,
-    double hours,
+    int credits,
+    int hours,
     String desc,
-    List<dynamic> teacherIds,
+    List<String> teachersIds,
   }) {
     if ((id == null || identical(id, this.id)) &&
         (name == null || identical(name, this.name)) &&
         (credits == null || identical(credits, this.credits)) &&
         (hours == null || identical(hours, this.hours)) &&
         (desc == null || identical(desc, this.desc)) &&
-        (teacherIds == null || identical(teacherIds, this.teachersIds))) {
+        (teachersIds == null || identical(teachersIds, this.teachersIds))) {
       return this;
     }
     return SubjectModel(

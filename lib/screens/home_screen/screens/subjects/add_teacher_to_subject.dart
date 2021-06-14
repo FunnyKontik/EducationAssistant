@@ -53,7 +53,7 @@ class _AddTeacherToSubjectState extends State<AddTeacherToSubject> {
       bloc: usersCubit,
       builder: (context, usersState) {
         if (usersState.isLoading) return WidgetUtils.showLoading();
-        var teachers;
+        List<UserModel> teachers;
 
         if(widget.subjectModel.teachersIds == null){
           teachers = usersState.teachers;
@@ -74,8 +74,9 @@ class _AddTeacherToSubjectState extends State<AddTeacherToSubject> {
                 title: Text(teacher.name),
                 trailing: IconButton(
                     onPressed: () async {
+                      print(teacher.id);
                       await subjectsCubit.addTeacherToSubject(
-                          widget.subjectModel, teacher.id);
+                          widget.subjectModel, teacher.id, );
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.add_outlined, color: Colors.grey)),

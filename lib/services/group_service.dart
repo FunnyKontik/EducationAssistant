@@ -11,10 +11,11 @@ class GroupService {
     return FirebaseFirestore.instance.collection(_groupCollection);
   }
 
-  Future<void> addGroup(GroupModel group) async {
+  Future<void> addGroup(String name) async {
     try {
-      await collectionPath.doc(group.id).set(group.toMap());
-      return group;
+      return collectionPath.add({
+        'name': name,
+      });
     } catch (e, s) {
       print('saveGroupToFirestore: $e, $s');
       return Future.error(e);

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:education_assistant/cubit/subjects/subjects_state.dart';
 import 'package:education_assistant/models/subject_model.dart';
+import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/services/subject_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +21,8 @@ class SubjectsCubit extends Cubit<SubjectState> {
     }
   }
 
-  void addSubject(String name, String desc, double credits, double hours, List<dynamic> teacherIds) async{
+  void addSubject(String name, String desc, int credits, int hours,
+      List<dynamic> teacherIds) async {
     try {
       emit(state.copyWith(isLoading: true));
       await _subjectService.addSubject(name, desc, credits, hours, teacherIds);
@@ -30,20 +32,21 @@ class SubjectsCubit extends Cubit<SubjectState> {
     }
   }
 
-  void addTeacherToSubject(SubjectModel subject, String teacherId) async{
+  void addTeacherToSubject(
+      SubjectModel subject, String teacherId) async {
     try {
       emit(state.copyWith(isLoading: true));
-      await _subjectService.addTeacher(subject,teacherId);
+      await _subjectService.addTeacherToSubject(subject, teacherId);
       emit(state.copyWith(isLoading: false));
     } catch (e, s) {
       emit(state.copyWith(isLoading: false));
     }
   }
 
-  void removeTeacherFromSubject(SubjectModel subject, String teacherId) async{
+  void removeTeacherFromSubject(SubjectModel subject, String teacherId) async {
     try {
       emit(state.copyWith(isLoading: true));
-      await _subjectService.removeTeacher(subject,teacherId);
+      await _subjectService.removeTeacher(subject, teacherId);
       emit(state.copyWith(isLoading: false));
     } catch (e, s) {
       emit(state.copyWith(isLoading: false));

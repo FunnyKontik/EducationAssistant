@@ -8,7 +8,7 @@ class SubjectService {
     return FirebaseFirestore.instance.collection(_subjectsCollection);
   }
 
-  Future<void> addTeacher(SubjectModel subject, String teacherId) {
+  Future<void> addTeacherToSubject(SubjectModel subject, String teacherId) {
     subject.teachersIds.add(teacherId);
     return collectionPath
         .doc(subject.id)
@@ -28,8 +28,8 @@ class SubjectService {
             (error) => print('Failed to update subject teacher: $error'));
   }
 
-  Future<void> addSubject(
-      String name, String desc, double credits, double hours, List<dynamic> teacherIds) {
+  Future<void> addSubject(String name, String desc, int credits, int hours,
+      List<dynamic> teacherIds) {
     // collectionPath.doc().collection('subjects');
     // final List<SubjectModel> subject = [];
     // subject.where((e) => e.teachersIds.contains(currentUser.id)).toList();

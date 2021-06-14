@@ -57,6 +57,8 @@ class _TeachersScreenState extends State<TeachersScreen> {
         final teachers =
             usersState.teachers.where((e) => e.id != currentUser.id).toList();
 
+        print(teachers.length);
+
         return ListView.builder(
           itemCount: teachers.length,
           itemBuilder: (_, index) {

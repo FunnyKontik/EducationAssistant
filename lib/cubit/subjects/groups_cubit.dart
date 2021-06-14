@@ -40,10 +40,10 @@ class GroupsCubit extends Cubit<GroupsState>{
     }
   }
 
-  Future<void> addGroup(GroupModel group) async{
+  Future<void> addGroup(String name) async{
     try{
       emit(state.copyWith(isLoading: true));
-      await _groupService.addGroup(group);
+      await _groupService.addGroup(name);
       emit(state.copyWith(isLoading: false));
 
     }

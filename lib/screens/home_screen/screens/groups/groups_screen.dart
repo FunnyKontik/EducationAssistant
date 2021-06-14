@@ -2,8 +2,10 @@ import 'package:education_assistant/constants/enums/user_role.dart';
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/subjects/groups_cubit.dart';
 import 'package:education_assistant/cubit/subjects/groups_state.dart';
+import 'package:education_assistant/custom_widgets/custom_text_field.dart';
 import 'package:education_assistant/models/group_model.dart';
 import 'package:education_assistant/models/user_model.dart';
+import 'package:education_assistant/utils/navigation_utils.dart';
 import 'package:education_assistant/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class GroupsScreen extends StatefulWidget {
 }
 
 class _GroupsScreenState extends State<GroupsScreen> {
+  TextEditingController groupNameEditingController = TextEditingController();
   GroupModel groupModel;
   GroupsCubit groupsCubit;
   UserModel currentUser;
@@ -31,12 +34,19 @@ class _GroupsScreenState extends State<GroupsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Список груп'),
-        centerTitle: true,
-      ),
-      body: buildBody(),
-    );
+        appBar: AppBar(
+          title: Text('Список груп'),
+          centerTitle: true,
+        ),
+        body: buildBody(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => showAddDialog(
+                groupNameEditingController.text),
+          ),
+          child: const Icon(Icons.add),
+        ));
   }
 
   Widget buildBody() {
@@ -51,6 +61,8 @@ class _GroupsScreenState extends State<GroupsScreen> {
           itemCount: groups.length,
           itemBuilder: (_, index) {
             final group = groups[index];
+            print(groups.length);
+            print('action');
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
@@ -74,8 +86,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
     showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-              title: const Text('Видалення групи',
-                  textAlign: TextAlign.center),
+              title: const Text('Видалення групи', textAlign: TextAlign.center),
               content: const Text(
                 'Ви дійсно хочете видалити групу?',
               ),
@@ -96,5 +107,34 @@ class _GroupsScreenState extends State<GroupsScreen> {
                 ),
               ],
             ));
+  }
+
+  Widget showAddDialog(String name) {
+    return AlertDialog(
+      scrollable: true,
+      title: Center(child: const Text('Створення нової групи')),
+      content: Column(children: [
+        CustomTextInput(
+          title: 'Введіть назву групи',
+          textEditingController: groupNameEditingController,
+        ),
+      ]),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Вiдмiнити',
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            await groupsCubit.addGroup(name);
+            Navigator.pop(context, 'Додати');
+          },
+          child: const Text('Додати'),
+        ),
+      ],
+    );
   }
 }
