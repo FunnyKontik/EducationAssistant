@@ -1,6 +1,7 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/subjects/groups_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
+import 'package:education_assistant/custom_widgets/user_avatar.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
@@ -103,10 +104,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ],
               ),
               accountEmail: Text(currentUser.email),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(currentUser.imageUrl),
-                radius: 30,
-              ),
+              currentAccountPicture: UserAvatar(user: currentUser),
             ),
             ListTile(
               leading: Icon(Icons.library_books_sharp),

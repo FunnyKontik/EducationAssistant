@@ -16,39 +16,44 @@ class SignWithCustomButton extends StatelessWidget {
     @required this.onPressed,
     this.backColor,
     this.fontColor,
-
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: SizedBox(
-        height: this.height,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Image.asset(icon, width: 30, height: 30,),
-            Text(
-              content,
-              style:
-              TextStyle(fontSize: 22, color: fontColor ?? Color.fromRGBO(40, 53, 85, 1)),
-            ),
-          ],
-        ),
-      ),
       style: ButtonStyle(
-        elevation: MaterialStateProperty.all(0
-        ),
+        elevation: MaterialStateProperty.all(0),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
           ),
         ),
-        backgroundColor: backColor ?? MaterialStateProperty.resolveWith<Color>(
+        backgroundColor: backColor ??
+            MaterialStateProperty.resolveWith<Color>(
               (Set<MaterialState> states) {
-            return Colors.white;
-          },
+                return Colors.white;
+              },
+            ),
+      ),
+      child: SizedBox(
+        height: height,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            if(icon.isNotEmpty)
+            Image.asset(
+              icon,
+              width: 30,
+              height: 30,
+            ),
+            Text(
+              content,
+              style: TextStyle(
+                  fontSize: 22,
+                  color: fontColor ?? const Color.fromRGBO(40, 53, 85, 1)),
+            ),
+          ],
         ),
       ),
     );

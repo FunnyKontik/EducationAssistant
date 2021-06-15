@@ -3,19 +3,22 @@ import 'package:education_assistant/cubit/auth/auth_state.dart';
 import 'package:education_assistant/custom_widgets/custom_button.dart';
 import 'package:education_assistant/custom_widgets/custom_text_field.dart';
 import 'package:education_assistant/custom_widgets/sign_with_button.dart';
-import 'package:education_assistant/screens/auth_screen/registration_screen.dart';
 import 'package:education_assistant/screens/home_screen/home_screen.dart';
 import 'package:education_assistant/utils/navigation_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthScreen extends StatefulWidget {
+import 'auth_screen.dart';
+
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key key}) : super(key: key);
+
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
   AuthCubit authCubit;
@@ -30,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(centerTitle: true, title: const Text('Авторизація')),
+      appBar: AppBar(centerTitle: true, title: const Text('Реєстрацiя')),
       body: buildBody(),
     );
   }
@@ -40,7 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
       bloc: authCubit,
       listener: (_, state) {
         if (!state.isLoading && state.currentUser != null) {
-          NavigationUtils.toScreenRemoveUntil(context, screen: HomeScreen());
+          NavigationUtils.toScreenRemoveUntil(context, screen: AuthScreen());
         }
       },
       child: Padding(
@@ -68,46 +71,8 @@ class _AuthScreenState extends State<AuthScreen> {
             title: 'Пароль',
             isPassword: true,
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {},
-              child: const Text('Забули пароль?'),
-            ),
-          ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: CustomButton(
-              content: 'Увійти',
-              height: 70,
-              width: 150,
-              fontSize: 20,
-              fontColor: Colors.white,
-              color: Colors.blue,
-              onPressed: () {
-                authCubit.firebaseSignIn(
-                    loginController.text, passwordController.text);
-              },
-            ),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Container(
-              height: 1,
-              width: 20,
-              color: Colors.black38,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-              child: Text('Або', style: TextStyle(color: Colors.black38)),
-            ),
-            Container(
-              height: 1,
-              width: 20,
-              color: Colors.black38,
-            ),
-          ]),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 50),
             child: SignWithCustomButton(
               backColor: MaterialStateProperty.resolveWith<Color>(
                 (states) {
@@ -119,22 +84,11 @@ class _AuthScreenState extends State<AuthScreen> {
               icon: '',
               height: 47,
               onPressed: () {
-                NavigationUtils.toScreen(context, screen: RegistrationScreen());
+                authCubit.firebaseRegistration(
+                    loginController.text, passwordController.text);
               },
             ),
           ),
-          SignWithCustomButton(
-            backColor: MaterialStateProperty.resolveWith<Color>(
-              (states) {
-                return const Color.fromRGBO(222, 82, 70, 1);
-              },
-            ),
-            fontColor: Colors.white,
-            content: 'Увійти з Google',
-            icon: 'assets/GoogleIcon.png',
-            height: 47,
-            onPressed: authCubit.googleSignIn,
-          )
         ]),
       ),
     );
