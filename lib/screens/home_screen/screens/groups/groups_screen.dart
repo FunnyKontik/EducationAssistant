@@ -40,13 +40,15 @@ class _GroupsScreenState extends State<GroupsScreen> {
           centerTitle: true,
         ),
         body: buildBody(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => showAddDialog(),
-          ),
-          child: const Icon(Icons.add),
-        ));
+        floatingActionButton: !(currentUser.role == UserRole.user)
+            ? FloatingActionButton(
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => showAddDialog(),
+                ),
+                child: const Icon(Icons.add),
+              )
+            : null);
   }
 
   Widget buildBody() {

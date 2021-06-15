@@ -1,9 +1,12 @@
+import 'package:education_assistant/constants/enums/user_role.dart';
+import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/groups/groups_cubit.dart';
 import 'package:education_assistant/cubit/groups/groups_state.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/custom_widgets/user_avatar.dart';
 import 'package:education_assistant/models/group_model.dart';
+import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/home_screen/screens/groups/add_student_to_group.dart';
 import 'package:education_assistant/screens/home_screen/screens/groups/add_subject_to_group.dart';
 import 'package:education_assistant/utils/navigation_utils.dart';
@@ -24,12 +27,16 @@ class _GroupInfoState extends State<GroupInfo> {
   UsersCubit usersCubit;
   SubjectsCubit subjectsCubit;
   GroupsCubit groupsCubit;
+  AuthCubit authCubit;
+  UserModel currentUser;
 
   @override
   void initState() {
+    authCubit = BlocProvider.of<AuthCubit>(context);
     usersCubit = BlocProvider.of<UsersCubit>(context);
     groupsCubit = BlocProvider.of<GroupsCubit>(context);
     subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
+    currentUser = authCubit.state.currentUser;
     super.initState();
   }
 
@@ -60,6 +67,7 @@ class _GroupInfoState extends State<GroupInfo> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
+            if(!(currentUser.role == UserRole.user))
             IconButton(
                 icon: const Icon(
                   Icons.add_circle,
@@ -78,6 +86,7 @@ class _GroupInfoState extends State<GroupInfo> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
+            if(!(currentUser.role == UserRole.user))
             IconButton(
                 icon: const Icon(
                   Icons.add_circle,
@@ -118,7 +127,8 @@ class _GroupInfoState extends State<GroupInfo> {
                         const Icon(Icons.info_outline, color: Colors.grey),
                     onTap: () {},
                     onLongPress: () {
-                      showStudentDeleteDialog(student.id);
+                      if(!(currentUser.role == UserRole.user))
+                        showStudentDeleteDialog(student.id);
                     },
                   ),
                 );
@@ -149,7 +159,8 @@ class _GroupInfoState extends State<GroupInfo> {
                         const Icon(Icons.info_outline, color: Colors.grey),
                     onTap: () {},
                     onLongPress: () {
-                      showSubjectDeleteDialog(subject.id);
+                      if(!(currentUser.role == UserRole.user))
+                        showSubjectDeleteDialog(subject.id);
                     },
                   ),
                 );

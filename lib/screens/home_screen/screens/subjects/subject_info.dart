@@ -1,3 +1,5 @@
+import 'package:education_assistant/constants/enums/user_role.dart';
+import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/subjects/subjects_state.dart';
 import 'package:education_assistant/cubit/users/users_state.dart';
@@ -25,11 +27,15 @@ class SubjectInfo extends StatefulWidget {
 class _SubjectInfoState extends State<SubjectInfo> {
   UsersCubit usersCubit;
   SubjectsCubit subjectsCubit;
+  AuthCubit authCubit;
+  UserModel currentUser;
 
   @override
   void initState() {
+    authCubit = BlocProvider.of<AuthCubit>(context);
     usersCubit = BlocProvider.of<UsersCubit>(context);
     subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
+    currentUser = authCubit.state.currentUser;
     // currentUser = authCubit.state.currentUser;
     // subjectTeachers = subjectsCubit.state.t
 
@@ -42,6 +48,7 @@ class _SubjectInfoState extends State<SubjectInfo> {
       appBar: AppBar(
         title: Text(widget.subjectModel.name),
         actions: <Widget>[
+          if(!(currentUser.role == UserRole.user))
           IconButton(
             icon: const Icon(
               Icons.add_outlined,
@@ -122,8 +129,10 @@ class _SubjectInfoState extends State<SubjectInfo> {
                 title: Text(teacher.name),
                 trailing: const Icon(Icons.info_outline, color: Colors.grey),
                 onTap: () {},
-                onLongPress: () {
-                  showAlterDialog(teacher.id);
+            onLongPress: () {
+              if(!(currentUser.role == UserRole.user)) {
+                showAlterDialog(teacher.id);
+              }
                 },
               ),
             );

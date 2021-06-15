@@ -97,10 +97,10 @@ class _HomeScreenState extends State<HomeScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(currentUser.name),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text('ПЗПІ-19-7'),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 8.0),
+                  //   child: Text('ПЗПІ-19-7'),
+                  // ),
                 ],
               ),
               accountEmail: Text(currentUser.email),

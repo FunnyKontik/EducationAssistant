@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:education_assistant/constants/enums/user_role.dart';
+import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
 import 'package:education_assistant/cubit/subjects/subjects_state.dart';
+import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/models/subject_model.dart';
+import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/home_screen/screens/subjects/add_subject_screen.dart';
 import 'package:education_assistant/screens/home_screen/screens/subjects/subject_info.dart';
 import 'package:education_assistant/services/subject_service.dart';
@@ -20,10 +24,14 @@ class SubjectsScreen extends StatefulWidget {
 
 class _SubjectsScreenState extends State<SubjectsScreen> {
   SubjectsCubit subjectsCubit;
+  AuthCubit authCubit;
+  UserModel userModel;
 
   @override
   void initState() {
+    authCubit = BlocProvider.of<AuthCubit>(context);
     subjectsCubit = BlocProvider.of<SubjectsCubit>(context);
+    userModel = authCubit.state.currentUser;
     super.initState();
   }
 
@@ -40,6 +48,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
       title: const Text('Предмети'),
       centerTitle: true,
       actions: <Widget>[
+        if(!(authCubit.state.currentUser.role == UserRole.user))
         IconButton(
           icon: const Icon(
             Icons.edit,
