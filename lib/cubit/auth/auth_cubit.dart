@@ -28,6 +28,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> firebaseRegistration(String email, String password) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final response = await _authService.firebaseRegistration(email, password);
+      emit(state.copyWith(isLoading: false, currentUser: response));
+    } catch (e, s) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  Future<void> firebaseSignIn(String email, String password) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final response = await _authService.firebaseSignIn(email, password);
+      emit(state.copyWith(isLoading: false, currentUser: response));
+    } catch (e, s) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
   Future<void> googleLogOut() async {
     try {
       emit(state.copyWith(isLoading: true));

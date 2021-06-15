@@ -109,7 +109,6 @@ class _SubjectInfoState extends State<SubjectInfo> {
                 .getTeachersIds(widget.subjectModel.id)
                 .contains(e.id))
             .toList();
-        print(teachers.length);
         return ListView.builder(
           shrinkWrap: true,
           itemCount: teachers.length,

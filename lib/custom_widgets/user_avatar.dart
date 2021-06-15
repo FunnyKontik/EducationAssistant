@@ -10,7 +10,6 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (user.imageUrl.isNotEmpty) {
       return ClipRRect(
-
         borderRadius: BorderRadius.all(Radius.circular(60)),
         child: Image.network(user.imageUrl),
       );

@@ -76,8 +76,8 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'imageUrl': imageUrl,
-      'name': name,
+      'imageUrl': imageUrl ?? '',
+      'name': name ?? 'Default user',
       'email': email,
       'role': role.asString
     };

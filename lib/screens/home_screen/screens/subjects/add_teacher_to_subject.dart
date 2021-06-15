@@ -1,6 +1,7 @@
 import 'package:education_assistant/constants/enums/user_role.dart';
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
 import 'package:education_assistant/cubit/subjects/subjects_cubit.dart';
+import 'package:education_assistant/cubit/subjects/subjects_state.dart';
 import 'package:education_assistant/cubit/users/users_state.dart';
 import 'package:education_assistant/custom_widgets/user_avatar.dart';
 import 'package:education_assistant/models/subject_model.dart';
@@ -49,17 +50,17 @@ class _AddTeacherToSubjectState extends State<AddTeacherToSubject> {
   }
 
   Widget buildBody() {
-    return BlocBuilder<UsersCubit, UsersState>(
-      bloc: usersCubit,
-      builder: (context, usersState) {
-        if (usersState.isLoading) return WidgetUtils.showLoading();
-        List<UserModel> teachers;
+    return BlocBuilder<SubjectsCubit, SubjectState>(
+      bloc: subjectsCubit,
+      builder: (context, subjectsState) {
+        if (subjectsState.isLoading) return WidgetUtils.showLoading();
 
+        List<UserModel> teachers;
         if(widget.subjectModel.teachersIds == null){
-          teachers = usersState.teachers;
+          teachers = usersCubit.state.teachers;
         }
         else {
-          teachers = usersState.teachers
+          teachers = usersCubit.state.teachers
               .where((e) => !widget.subjectModel.teachersIds.contains(e.id))
               .toList();
         }
@@ -74,10 +75,8 @@ class _AddTeacherToSubjectState extends State<AddTeacherToSubject> {
                 title: Text(teacher.name),
                 trailing: IconButton(
                     onPressed: () async {
-                      print(teacher.id);
                       await subjectsCubit.addTeacherToSubject(
                           widget.subjectModel, teacher.id, );
-                      Navigator.pop(context);
                     },
                     icon: const Icon(Icons.add_outlined, color: Colors.grey)),
                 onTap: () {},
