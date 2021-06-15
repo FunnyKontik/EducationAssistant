@@ -15,6 +15,8 @@ class GroupService {
     try {
       return collectionPath.add({
         'name': name,
+        'subjectsIds' : [],
+        'usersIds' : [],
       });
     } catch (e, s) {
       print('saveGroupToFirestore: $e, $s');
@@ -40,4 +42,46 @@ class GroupService {
       return null;
     }
   }
+
+  Future<void> addStudentToGroup(GroupModel groupModel, String studentId) {
+    groupModel.usersIds.add(studentId);
+    return collectionPath
+        .doc(groupModel.id)
+        .update({'usersIds': groupModel.usersIds})
+        .then((value) => print('Student added to group'))
+        .catchError(
+            (error) => print('Failed to update subject teacher: $error'));
+  }
+
+  Future<void> removeStudentFromGroup(GroupModel groupModel, String studentId) {
+    groupModel.usersIds.remove(studentId);
+    return collectionPath
+        .doc(groupModel.id)
+        .update({'usersIds': groupModel.usersIds})
+        .then((value) => print('Student deleted from group'))
+        .catchError(
+            (error) => print('Failed to update subject teacher: $error'));
+  }
+
+  Future<void> addSubjectToGroup(GroupModel groupModel, String subjectId) {
+    groupModel.subjectsIds.add(subjectId);
+    print(subjectId);
+    return collectionPath
+        .doc(groupModel.id)
+        .update({'subjectsIds': groupModel.subjectsIds})
+        .then((value) => print('Group subjects updated'))
+        .catchError(
+            (error) => print('Failed to update subject teacher: $error'));
+  }
+
+  Future<void> removeSubjectFromGroup(GroupModel groupModel, String subjectId) {
+    groupModel.subjectsIds.remove(subjectId);
+    return collectionPath
+        .doc(groupModel.id)
+        .update({'subjectsIds': groupModel.subjectsIds})
+        .then((value) => print('Subject deleted from group'))
+        .catchError(
+            (error) => print('Failed to update subject teacher: $error'));
+  }
+
 }

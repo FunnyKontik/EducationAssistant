@@ -11,8 +11,28 @@ class GroupsState{
     this.isLoading = true,
 });
 
-  List<GroupModel> get models{
+  List<GroupModel> get groups{
     return allGroups;
+  }
+
+  List<String> getStudentsIds(String groupId) {
+    var ids = <String>[];
+
+    for (int i = 0; i < allGroups.length; i++) {
+      if (allGroups[i].id == groupId) ids = allGroups[i].usersIds;
+    }
+
+    return ids;
+  }
+
+  List<String> getSubjectsIds(String groupId) {
+    var ids = <String>[];
+
+    for (int i = 0; i < allGroups.length; i++) {
+      if (allGroups[i].id == groupId) ids = allGroups[i].subjectsIds;
+    }
+
+    return ids;
   }
 
   GroupsState copyWith({

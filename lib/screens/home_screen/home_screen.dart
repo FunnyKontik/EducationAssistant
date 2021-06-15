@@ -1,5 +1,5 @@
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
-import 'package:education_assistant/cubit/subjects/groups_cubit.dart';
+import 'package:education_assistant/cubit/groups/groups_cubit.dart';
 import 'package:education_assistant/cubit/users/users_cubit.dart';
 import 'package:education_assistant/models/user_model.dart';
 import 'package:education_assistant/screens/auth_screen/auth_screen.dart';
