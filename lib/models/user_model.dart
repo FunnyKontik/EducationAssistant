@@ -8,12 +8,14 @@ class UserModel {
   final String imageUrl;
   final String email;
   final UserRole role;
+  final String groupId;
 
   UserModel({
     @required this.imageUrl,
     @required this.name,
     @required this.email,
     @required this.role,
+    @required this.groupId,
     this.id,
   });
 
@@ -25,12 +27,14 @@ class UserModel {
     String imageUrl,
     String email,
     UserRole role,
+    String groupId,
   }) {
     if ((id == null || identical(id, this.id)) &&
         (name == null || identical(name, this.name)) &&
         (imageUrl == null || identical(imageUrl, this.imageUrl)) &&
         (email == null || identical(email, this.email)) &&
-        (role == null || identical(role, this.role))) {
+        (role == null || identical(role, this.role)) &&
+        (groupId == null || identical(groupId, this.groupId))) {
       return this;
     }
     return UserModel(
@@ -39,6 +43,7 @@ class UserModel {
       imageUrl: imageUrl ?? this.imageUrl,
       email: email ?? this.email,
       role: role ?? this.role,
+      groupId: groupId ?? this.groupId,
     );
   }
 
@@ -48,6 +53,7 @@ class UserModel {
       name: map['name'] as String,
       email: map['email'] as String,
       role: _roleFromString(map['role']),
+      groupId: map['groupId'] as String,
     );
   }
 
@@ -58,6 +64,7 @@ class UserModel {
       name: firebaseUser.displayName,
       email: firebaseUser.email,
       role: UserRole.user,
+      groupId: '',
     );
   }
 
@@ -79,7 +86,8 @@ class UserModel {
       'imageUrl': imageUrl ?? '',
       'name': name ?? 'Default user',
       'email': email,
-      'role': role.asString
+      'role': role.asString,
+      'groupId': groupId,
     };
   }
 }

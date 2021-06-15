@@ -1,10 +1,11 @@
 import 'package:education_assistant/constants/enums/user_role.dart';
 import 'package:education_assistant/cubit/auth/auth_cubit.dart';
-import 'package:education_assistant/cubit/subjects/groups_cubit.dart';
-import 'package:education_assistant/cubit/subjects/groups_state.dart';
+import 'package:education_assistant/cubit/groups/groups_cubit.dart';
+import 'package:education_assistant/cubit/groups/groups_state.dart';
 import 'package:education_assistant/custom_widgets/custom_text_field.dart';
 import 'package:education_assistant/models/group_model.dart';
 import 'package:education_assistant/models/user_model.dart';
+import 'package:education_assistant/screens/home_screen/screens/groups/group_info.dart';
 import 'package:education_assistant/utils/navigation_utils.dart';
 import 'package:education_assistant/utils/widget_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,8 +43,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => showDialog<String>(
             context: context,
-            builder: (BuildContext context) => showAddDialog(
-                groupNameEditingController.text),
+            builder: (BuildContext context) => showAddDialog(),
           ),
           child: const Icon(Icons.add),
         ));
@@ -61,14 +61,17 @@ class _GroupsScreenState extends State<GroupsScreen> {
           itemCount: groups.length,
           itemBuilder: (_, index) {
             final group = groups[index];
-            print(groups.length);
-            print('action');
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
                 title: Text(group.name),
                 trailing: const Icon(Icons.info_outline, color: Colors.grey),
-                onTap: () {},
+                onTap: () {
+                  NavigationUtils.toScreen(context,
+                      screen: GroupInfo(
+                        groupModel: group,
+                      ));
+                },
                 onLongPress: () {
                   if (currentUser.role == UserRole.admin) {
                     showAlterDialog(group);
@@ -109,7 +112,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
             ));
   }
 
-  Widget showAddDialog(String name) {
+  Widget showAddDialog() {
     return AlertDialog(
       scrollable: true,
       title: Center(child: const Text('Створення нової групи')),
@@ -129,7 +132,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
         ),
         TextButton(
           onPressed: () async {
-            await groupsCubit.addGroup(name);
+            await groupsCubit.addGroup(groupNameEditingController.text);
             Navigator.pop(context, 'Додати');
           },
           child: const Text('Додати'),
